@@ -1,0 +1,45 @@
+[
+  {
+    "id": 1,
+    "name": "taskName",
+    "description": "taskDescription",
+    "timeTaken": <X>,
+    "dueDate": "2024-06-23T14:00:30",
+    "scheduledStart": "2024-06-20T14:00:30",
+    "scheduledEnd": "2024-06-20T17:00:30"
+  },
+  {
+    "id": 2,
+    "name": "taskName",
+    "description": "taskDescription",
+    "timeTaken": <X>,
+    "dueDate": "2024-06-24T08:00:30",
+    "scheduledStart": "2024-06-21T14:00:30",
+    "scheduledEnd": "2024-06-21T16:00:30"
+  },
+  {
+    "id": 3,
+    "name": "taskName",
+    "description": "taskDescription",
+    "timeTaken": <X>,
+    "dueDate": "2024-06-23T14:00:30",
+    "scheduledStart": "2024-06-23T14:00:30",
+    "scheduledEnd": "2024-06-23T14:00:30"
+  },
+  {
+    "id": 4,
+    "name": "taskName",
+    "description": "taskDescription",
+    "timeTaken": <X>,
+    "dueDate": "2024-06-23T14:00:30",
+    "scheduledStart": "2024-06-22T14:00:30",
+    "scheduledEnd": "2024-06-22T17:00:30"
+  },
+  {
+    "id": 1,
+    "name": "eventName",
+    "description": "eventDescription",
+    "timeTaken": <X>,
+    "date": "1977-04-01T14:00:30"
+  }
+]
