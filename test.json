@@ -1,0 +1,49 @@
+[{
+    "id": 1,
+    "type": "task",
+    "name": "taskName",
+    "timeTaken": 3,
+    "dueDate": "2024-06-23T14:00:30",
+    "scheduledStart": "2024-06-20T14:00:30",
+    "scheduledEnd": "2024-06-20T17:00:30",
+    "taskType": "long",
+    "resources": "X"
+  },
+  {
+    "id": 2,
+    "type": "task",
+    "name": "taskName",
+    "timeTaken": 2,
+    "dueDate": "2024-06-24T08:00:30",
+    "scheduledStart": "2024-06-21T16:00:30",
+    "scheduledEnd": "2024-06-21T18:00:30",
+    "taskType": "long",
+    "resources": "X"
+  },
+  {
+    "id": 3,
+    "type": "task",
+    "name": "taskName",
+    "timeTaken": 0.5,
+    "dueDate": "2024-06-24T08:00:30",
+    "scheduledStart": "2024-06-20T17:30:30",
+    "scheduledEnd": "2024-06-20T18:00:30",
+    "taskType": "short",
+    "resources": "X"
+  },
+  {
+    "id": 1,
+    "type": "event",
+    "name": "eventName",
+    "scheduledStart": "1977-04-00T14:00:30",
+    "scheduledEnd": "1977-04-00T17:00:30"
+  },
+  {
+    "id": 2,
+    "type": "event",
+    "name": "Visit Mother",
+    "timeTaken": 1,
+    "scheduledStart": "2024-06-21T14:00:30",
+    "scheduledEnd": "2024-06-21T15:00:30"
+  }
+]

@@ -17,6 +17,9 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@fullcalendar/core": "^6.1.14",
+    "@fullcalendar/daygrid": "^6.1.14",
+    "@fullcalendar/react": "^6.1.14",
     "@mui/material": "^5.15.20",
     "@radix-ui/react-popover": "^1.1.0",
     "body-parser": "^1.20.2",
@@ -29,11 +32,13 @@
     "mysql2": "^3.10.1",
     "openai": "^4.52.0",
     "react": "^18.3.1",
+    "react-big-calendar": "^1.13.0",
     "react-burger-menu": "^3.0.9",
     "react-dom": "^18.3.1",
     "react-icons": "^5.2.1",
     "react-scripts": "^5.0.1",
     "sequelize": "^6.37.3",
+    "undefined": "^0.1.0",
     "yml": "^1.0.0"
   },
   "devDependencies": {

@@ -37,7 +37,7 @@ function Tasks({ tasks }) {
     return (
         <div>
             <div className="flex items-center justify-between">
-                <h2 className="text-md font-bold">Tasks</h2>
+                <h2 className="text-lg font-bold">Events</h2>
             </div>
             {tasks.map((task) => (
                 <Task label={task.label} time={task.time} checked={task.checked} />
