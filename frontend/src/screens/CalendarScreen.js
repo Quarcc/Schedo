@@ -7,9 +7,7 @@ const localizer = momentLocalizer(moment)
 
 function MyCalendar({ events }) {
 
-    
-
-    return (
+    return (<div>
         <div>
             <Calendar
                 localizer={localizer}
@@ -18,6 +16,12 @@ function MyCalendar({ events }) {
                 endAccessor="end"
                 style={{ height: 500 }}
             />
+        </div>
+        <div>
+            <div className="bg-white rounded-lg shadow-md p-6 mx-3">
+                <div className="text-md">Resources</div>
+            </div>
+        </div>
         </div>
     )
 }

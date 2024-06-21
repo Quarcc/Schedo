@@ -5,7 +5,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
-const model = "gpt-3.5-turbo";
+const model = "gpt-4o";
 let currentDate = new Date().toISOString()
 var systemPrompt = `
   You are a task scheduler.You will be given a JSON list of TASKS and EVENTS.Every EVENT has the following fields: {
@@ -127,7 +127,7 @@ async function addTask(taskToAdd, existingEventsTasks, personalization) {
 
         DO NOT schedule anything before the current date and time, which is ${currentDate}.
 
-        Your output should be new schedule containing all of Exisiting EVENTs and TASKs AND the TASK to be added. Return your output as a list of JSON objects similar to the above ones. Do not add any extra text - the only thing you should output is a list of JSON objects, such as [{<TASK in JSON notation>}, {<EVENT in JSON notation>}, ...]. Ensure that the output is JSON-parseable - this is very important.`
+        Your output should be new schedule containing all of Exisiting EVENTs and TASKs AND the TASK to be added. Return your output as a list of JSON objects similar to the above ones. Do not add any extra text - the only thing you should output is a list of JSON objects, such as [{<TASK in JSON notation>}, {<EVENT in JSON notation>}, ...]. Ensure that the output is JSON-parseable - this is very important. DO NOT SPECIFY IN YOUR RESPONSE THAT THE OUTPUT IS OF JSON FORMAT.`
         },
       ],
       model: model,
@@ -175,7 +175,7 @@ async function addEvent(eventToAdd, existingEventsTasks) {
 
         DO NOT schedule anything before the current date and time, which is ${currentDate}.
 
-        Your output should be new schedule containing all of Exisiting EVENTs and TASKs AND the TASK to be added. Return your output as a list of JSON objects similar to the above ones. Do not add any extra text or language indicators. The only thing you should output is a list of JSON objects, such as [{<TASK in JSON notation>}, {<EVENT in JSON notation>}, ...]. Ensure that the output is JSON-parseable - this is very important.`
+        Your output should be new schedule containing all of Exisiting EVENTs and TASKs AND the TASK to be added. Return your output as a list of JSON objects similar to the above ones. Do not add any extra text or language indicators. The only thing you should output is a list of JSON objects, such as [{<TASK in JSON notation>}, {<EVENT in JSON notation>}, ...]. Ensure that the output is JSON-parseable - this is very important. DO NOT SPECIFY IN YOUR RESPONSE THAT THE OUTPUT IS OF JSON FORMAT`
         },
       ],
       model: model,
@@ -192,7 +192,7 @@ taskToAdd = `{
   "id": 4,
   "type": "task",
   "name": "Code the final product using ReactJS and NodeJS",
-  "timeTaken": 4
+  "timeTaken": 4,
   "dueDate": "2024-06-25-01T14:00:30",
 }`
 
@@ -200,7 +200,7 @@ eventToAdd = `{
   "id": 2,
   "type": "event",
   "name": "Visit Mother",
-  "timeTaken": 1
+  "timeTaken": 1,
   "scheduledStart": "2024-06-21T14:00:30",
   "scheduledEnd": "2024-06-21T15:00:30"
 }`

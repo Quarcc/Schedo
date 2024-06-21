@@ -1,5 +1,5 @@
 import React from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Button from './Button.js';
 import Schedule from './Schedule.js';
 import Tasks from './Tasks.js';
@@ -16,24 +16,99 @@ import {getEvents} from "./API.js"
 
 function App() {
 
-  console.log(Date.UTC(2024, 6, 22, 4, 0, 0))
+  //console.log(Date.UTC(2024, 6, 22, 4, 0, 0))
+
+  // let events = [
+  //   {
+  //     title: "New Event [Duration: 2-4]",
+  //     start: Date.UTC(2024, 6, 22, 2, 0, 0),
+  //     end: Date.UTC(2024, 6, 22, 4, 0, 0),
+  //     resource: "Test resource. What does this mean?"
+  //   },
+  //   {
+  //     title: "New Event [Duration: 4-6]",
+  //     start: Date.UTC(2024, 6, 22, 4, 0, 0),
+  //     end: Date.UTC(2024, 6, 22, 6, 0, 0),
+  //   }
+  // ]
 
   let events = [
     {
-      title: "New Event [Duration: 2-4]",
-      start: Date.UTC(2024, 6, 22, 2, 0, 0),
-      end: Date.UTC(2024, 6, 22, 4, 0, 0),
-      resource: "Test resource. What does this mean?"
+        "taskID": 1,
+        "name": "Learn how to use ReactJS and NodeJS",
+        "timeTaken": 3,
+        "dueDate": "2024-06-23T14:00:30",
+        "scheduledStart": "2024-06-21T01:00:00.000Z",
+        "scheduledEnd": "2024-06-21T04:00:00.000Z",
+        "taskType": "long",
+        "resources": [
+            "X"
+        ]
     },
     {
-      title: "New Event [Duration: 4-6]",
-      start: Date.UTC(2024, 6, 22, 4, 0, 0),
-      end: Date.UTC(2024, 6, 22, 6, 0, 0),
+        "taskID": 2,
+        "name": "Learn best practices",
+        "timeTaken": 1,
+        "dueDate": "2024-06-24T08:00:30",
+        "scheduledStart": "2024-06-21T04:30:00.000Z",
+        "scheduledEnd": "2024-06-21T05:00:00.000Z",
+        "taskType": "short",
+        "resources": [
+            "X"
+        ]
+    },
+    {
+        "taskID": 3,
+        "name": "Create Low-Fidelity prototype",
+        "timeTaken": 1,
+        "dueDate": "2024-06-24T08:00:30",
+        "scheduledStart": "2024-06-21T05:00:00.000Z",
+        "scheduledEnd": "2024-06-21T05:30:00.000Z",
+        "taskType": "short",
+        "resources": [
+            "X"
+        ]
+    },
+    {
+        "taskID": 4,
+        "name": "Code the final product using ReactJS and NodeJS",
+        "timeTaken": 4,
+        "dueDate": "2024-06-25T14:00:30",
+        "scheduledStart": "2024-06-24T01:00:00.000Z",
+        "scheduledEnd": "2024-06-24T05:00:00.000Z",
+        "taskType": "long",
+        "resources": [
+            "Read the official ReactJS documentation: https://reactjs.org/docs/getting-started.html",
+            "Explore NodeJS tutorials on NodeSource: https://nodesource.com/blog",
+            "Use VS Code with the necessary extensions for better development experience",
+            "Follow industry-standard style guides (like Airbnb's JavaScript style guide)",
+            "Keep code modular and maintainable by breaking it into smaller components"
+        ]
     }
-  ]
+]
 
+  let [eventsState, setEventsState] = useState(null)
   let [navigationState, setNavigationState] = useState("home") // ["home", "schedule", "tasks", "settings"]
-  let [navigationScreenState, setNavigationScreenState] = useState(<CalendarScreen events={events}/>) // ["calendar", "list"]
+  let [navigationScreenState, setNavigationScreenState] = useState(null) // ["calendar", "list"]
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        //const data = await getEvents();
+        const data = events
+        console.log("HELP");
+        console.log(data);
+        setEventsState(data);
+        console.log(data);
+        setNavigationScreenState(<CalendarScreen events={eventsState} />);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    fetchData();
+  }, []);
+  console.log(eventsState)
   
 
   const [nameValue, setNameValue] = useState('');
@@ -61,7 +136,7 @@ function App() {
     'icon': <AiFillHome />,
     'onClick': () => {
       setNavigationState("home")
-      setNavigationScreenState(<CalendarScreen events={events}/>)
+      setNavigationScreenState(<CalendarScreen events={eventsState}/>)
     }
   },
   {

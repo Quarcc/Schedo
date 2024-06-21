@@ -2,17 +2,17 @@ import axios from 'axios'
 
 const APIEndPoint = "localhost:8000"
 
-function getEvents() {
+async function getEvents() {
     console.log("Clicked!")
-    axios.get(`http://${APIEndPoint}/alltasks`)
+    await axios.get(`http://${APIEndPoint}/alltasks`)
         .then(res => {
             //const events = res.data
-            console.log(res)
-            console.log(JSON.parse(res.data))
+            console.log("HELP ME")
             console.log(res.data)
-            return JSON.parse(res.data)
+            return res.data
         })
         .catch(error => {
+            console.log(error)
             if (error.response) {
                 // The server responded with a status code outside the 2xx range
                 console.log('Error response:', error.response);
@@ -29,7 +29,7 @@ function getEvents() {
 function postAssignment(params) {
     axios.post(`http://${APIEndPoint}/`, params)
         .then(res => {
-            console.log(res)
+            console.log(res.status)
         })
 }
 
