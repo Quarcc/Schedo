@@ -6,6 +6,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
+import { postAssignment } from "../API.js"
+
 
 function TasksScreen() {
     const [openAssignment, setOpenAssignment] = useState(false);
@@ -37,11 +39,16 @@ function TasksScreen() {
         console.log('Task Name:', taskName);
         console.log('Due Date:', dueDate);
         console.log('Task Description:', taskDescription);
+        const data = {
+            'task': taskDescription,
+            'date': dueDate
+        }
+        postAssignment(data);
         handleCloseAssignment();
     };
 
 
-    const handleSubmitTask = () => {
+    const handleSubmitEvent = () => {
         console.log('Task Name:', taskName);
         console.log('Start Date:', startDate);
         console.log('Start Date:', endDate );
@@ -143,7 +150,7 @@ function TasksScreen() {
                             value={dueDate}
                             onChange={(e) => setDueDate(e.target.value)}
                         />
-                        <Button onClick={handleSubmitTask} variant="contained" color="primary" sx={{ mt: 2 }}>
+                        <Button onClick={handleSubmitEvent} variant="contained" color="primary" sx={{ mt: 2 }}>
                             Submit
                             </Button>
                         </Typography>

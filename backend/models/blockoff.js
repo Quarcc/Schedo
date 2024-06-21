@@ -10,10 +10,10 @@ const BlockOff = db.define('blockoff', {
         type: Sequelize.INTEGER
     },
     scheduledStart: {
-        type: Sequelize.DATE
+        type: Sequelize.STRING
     },
     scheduledEnd: {
-        type: Sequelize.DATE
+        type: Sequelize.STRING
     },
 });
 

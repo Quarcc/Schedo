@@ -48,7 +48,7 @@ function SettingsScreen() {
         console.log('Preferred Days:', daysString);
         console.log('Preferred Times:', timesString);
         // Example API call (adjust URL and method as needed)
-        fetch('/api/settings', {
+        fetch('/settings', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

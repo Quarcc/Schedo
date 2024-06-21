@@ -6,9 +6,10 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const BlockOff = require('./models/blockoff');
 const Events = require('./models/events');
-const Tasks = require('./models/tasks');
+const Tasks = require('./models/tasks'); 
 const {addTask, addEvent} = require('./ai');
 const cors = require("cors");
+const { randomInt } = require("crypto");
 
 const app = express();
 
@@ -108,32 +109,78 @@ existingEventsTasks = `{
 
 personalization = `{
     "blockedOff": {
-    1: [],
+    1: [{"scheduledStart": 00:30:00, "scheduledEnd": 08:00:00},
+            {"scheduledStart": 23:58:00, "scheduledEnd": 23:59:00}],
     2: [ {"scheduledStart": 00:30:00, "scheduledEnd": 08:00:00},
-            {"scheduledStart": 13:00, "scheduledEnd": 15:00} ]
-    3: [],
+            {"scheduledStart": 23:58:00, "scheduledEnd": 23:59:00} ],
+    3: [ {"scheduledStart": 00:30:00, "scheduledEnd": 08:00:00},
+            {"scheduledStart": 23:58:00, "scheduledEnd": 23:59:00} ],
     4: [{"scheduledStart": 00:30:00, "scheduledEnd": 08:00:00},
-            {"scheduledStart": 13:00, "scheduledEnd": 15:00}],
+            {"scheduledStart": 23:58:00, "scheduledEnd": 23:59:00}],
     5: [ {"scheduledStart": 00:30:00, "scheduledEnd": 08:00:00},
-            {"scheduledStart": 12:00, "scheduledEnd": 22:00} ]
+            {"scheduledStart": 23:58:00, "scheduledEnd": 23:59:00}],
     6: [ {"scheduledStart": 00:30:00, "scheduledEnd": 08:00:00},
-        {"scheduledStart": 12:00, "scheduledEnd": 22:00} ]
+            {"scheduledStart": 23:58:00, "scheduledEnd": 23:59:00}],
     7: [ {"scheduledStart": 00:30:00, "scheduledEnd": 08:00:00},
-    {"scheduledStart": 12:00, "scheduledEnd": 22:00} ]
-},
-"preferredTimes": "2, 4",
-"preferredDays": "1, 3, 4"
-}
+            {"scheduledStart": 23:58:00, "scheduledEnd": 23:59:00}]
+    },
+        "preferredTimes": "2, 4",
+        "preferredDays": "1, 3, 4"
+    }
 `
+
+
+// Add the task
+addTask(taskToAdd, existingEventsTasks, personalization)
+    .then(newSchedule => {
+            console.log('Updated Schedule with Task:', newSchedule)
+            const allEvents = [];
+            const allTasks = [];
+            for (const item of newSchedule) {
+                if (item.type === "event") {
+                    allEvents.push(item);
+                } else {
+                    allTasks.push(item);
+                }
+            };
+
+            allTasks.forEach(i =>{
+                const str = i.resources;
+    
+                // Split the string by '\n' to create an array
+                let array = str.split('\n');
+                
+                // Remove the number and space at the beginning of each line
+                array = array.map(item => item.replace(/^\d+\.\s*/, ''));
+                
+                Tasks.create({taskID:i.id,
+                    name:i.name,
+                    timeTaken:Math.round(i.timeTaken),
+                    dueDate:i.dueDate,
+                    scheduledStart:i.scheduledStart,
+                    scheduledEnd:i.scheduledEnd,
+                    taskType:i.taskType,
+                    resources:array}).then(task =>{
+                }).catch(error=>{
+                    console.error('Error creating task:', error);
+                });
+            })
+        })   
+    .catch(error => console.error('Error adding task:', error));
+
+// Add the event
+addEvent(eventToAdd, existingEventsTasks)
+    .then(newSchedule => console.log('Updated Schedule with Event:', newSchedule))
+    .catch(error => console.error('Error adding event:', error));
+
 app.post('/addtask', async (req, res) => {
     const existing = await Tasks.findAll();
     Tasks.truncate();
     const requestBody = req.body;
-    // const tasks = requestBody.task;
-    const tasks = "Do some research on Flask, 2\nCreate a low-fidelity prototype, 1\nDevelop the final product, 4";
-    const date = "2024-06-25-01T14:00:30";
+    const tasks = requestBody.task;
+    const date = requestBody.date;
     const type = "task";
-    const tid = 10;
+    const tid = randomInt(5, 99999);
 
     const newTasks = tasks.split('\n');
     const formattedTasks = newTasks.map((task, index)=> {
@@ -154,10 +201,10 @@ app.post('/addtask', async (req, res) => {
         "blockedOff": {
             1: [],
             2: [ {"scheduledStart": 00:30:00, "scheduledEnd": 08:00:00},
-                    {"scheduledStart": 13:00, "scheduledEnd": 15:00} ]
+                    {"scheduledStart": 23:58:00, "scheduledEnd": 23:59:00} ]
         3: [],
         4: [{"scheduledStart": 00:30:00, "scheduledEnd": 08:00:00},
-                    {"scheduledStart": 13:00, "scheduledEnd": 15:00}],
+                    {"scheduledStart": 23:58:00, "scheduledEnd": 23:59:00}],
         5: [ {"scheduledStart": 00:30:00, "scheduledEnd": 08:00:00},
                     {"scheduledStart": 12:00, "scheduledEnd": 22:00} ]
         6: [ {"scheduledStart": 00:30:00, "scheduledEnd": 08:00:00},
@@ -202,53 +249,33 @@ app.post('/addtask', async (req, res) => {
     .catch(error => console.error('Error adding task:', error));
 })
 
-// Add the task
-addTask(taskToAdd, existingEventsTasks, personalization)
-    .then(newSchedule => {
-            console.log('Updated Schedule with Task:', newSchedule)
-            const allEvents = [];
-            const allTasks = [];
-            for (const item of newSchedule) {
-                if (item.type === "event") {
-                    allEvents.push(item);
-                } else {
-                    allTasks.push(item);
-                }
-            };
-
-            allTasks.forEach(i =>{
-                const str = i.resources;
-    
-                // Split the string by '\n' to create an array
-                let array = str.split('\n');
-                
-                // Remove the number and space at the beginning of each line
-                array = array.map(item => item.replace(/^\d+\.\s*/, ''));
-                
-                Tasks.create({taskID:i.id,
-                    name:i.name,
-                    timeTaken:Math.round(i.timeTaken),
-                    dueDate:i.dueDate,
-                    scheduledStart:i.scheduledStart,
-                    scheduledEnd:i.scheduledEnd,
-                    taskType:i.taskType,
-                    resources:array}).then(task =>{
-                }).catch(error=>{
-                    console.error('Error creating task:', error);
-                });
-            })
-        })   
-    .catch(error => console.error('Error adding task:', error));
-
-// Add the event
-// addEvent(eventToAdd, existingEventsTasks)
-//     .then(newSchedule => console.log('Updated Schedule with Event:', newSchedule))
-//     .catch(error => console.error('Error adding event:', error));
+app.post('/addevent', async (req, res) => {
+    const existing = await Events.findAll();
+    Events.truncate();
+    const requestBody = req.body;
+    const tasks = requestBody.task;
+})
 
 app.get('/alltasks', async (req, res) => {
     const task = await Tasks.findAll();
     return res.status(200).send(JSON.stringify(task))
 
+})
+
+app.post('/setPreferred', async (req, res) => {
+    const requestBody = req.body;
+    const preferredDays = requestBody.preferredDays;
+    const preferredTimes = requestBody.preferredTimes;
+    if (preferredDays && preferredDays) {
+        const finalPreferred = `{
+            "preferredTimes": ${preferredTimes},
+            "preferredDays": ${preferredDays}"
+        }`
+        // store in db
+        res.status(200)
+    } else {
+        res.status(400)
+    }
 })
 
 app.listen(port, ()=>{

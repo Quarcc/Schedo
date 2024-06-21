@@ -27,10 +27,7 @@ async function getEvents() {
 }
 
 function postAssignment(params) {
-    axios.post(`http://${APIEndPoint}/`, params)
-        .then(res => {
-            console.log(res.status)
-        })
+    axios.post(`http://${APIEndPoint}/addtask`, params)
 }
 
 function postEvent() {
@@ -39,5 +36,6 @@ function postEvent() {
             console.log(res)
         })
 }
+
 
 export { getEvents, postAssignment, postEvent }
